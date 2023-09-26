@@ -7,11 +7,23 @@ docker ps
 
 docker ps -a
 
-docker start <image-id>
+docker start <container-id>
 
-docker stop <image-id>
+docker stop <container-id>
 
-docker rm <image-id>
+docker rm <container-id>
+
+docker ps -aq
+
+docker stop $(docker ps -aq)
+
+docker rm $(docker ps -aq)
+
+docker images
+
+docker rmi <image-id>
+
+docker rmi $(docker ps -aq)
 
 docker logs -f shopping-mongo
 
@@ -22,6 +34,8 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose.override.yml up -d
 docker-compose -f .\docker-compose.yml -f .\docker-compose.override.yml down
 
 docker run -d -p 3000:3000 mongoclient/mongoclient
+
+
 
 ============================================================= Mongo
 ls

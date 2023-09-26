@@ -24,12 +24,12 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync()
         {
-            var result = await _productRepository.GetAllProductsAsync();
+            var result = await _productRepository.GetProductsAsync();
             return Ok(result);
         }
 
 
-        [HttpGet("[action]/{category}", Name = "GetProductsByCategory")]
+        [HttpGet("{category}", Name = "GetProductsByCategory")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategoryAsync(string category)
         {
@@ -37,28 +37,37 @@ namespace Catalog.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetProduct")]
+        [HttpGet("[action]/{name}", Name = "GetProductByName")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductByNameAsync(string name)
+        {
+            var products = await _productRepository.GetProductsByNameAsync(name);
+
+            return Ok(products);
+        }
+
+        [HttpGet("{id:length(24)}", Name = "GetProductById")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
         public async Task<ActionResult<Product>> GetProductByIdAsync(string id)
         {
-            var result = await _productRepository.GetProductByIdAsync(id);
+            var product = await _productRepository.GetProductByIdAsync(id);
 
-            if(result is null)
+            if(product is null)
             {
                 _logger.LogError($"Product with id: {id}, Not Found.");
                 return NotFound();
             }
 
-            return Ok(result);
+            return Ok(product);
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Product))]
         public async Task<ActionResult<Product>> CreateProductAsync([FromBody] Product product)
         {
             await _productRepository.CreateProductAsync(product);
-            return CreatedAtRoute("GetProduct", new { Id = product.Id }, product);
+            return CreatedAtRoute("GetProductById", new { Id = product.Id }, product);
         }
 
         [HttpPut]
