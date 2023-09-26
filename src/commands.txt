@@ -1,4 +1,6 @@
 ============================================================= docker
+hub.docker.com --> website
+
 docker pull mongo
 
 docker run -d -p 27017:27017 --name shopping-mongo mongo
@@ -25,6 +27,8 @@ docker rmi <image-id>
 
 docker rmi $(docker ps -aq)
 
+docker system prune
+
 docker logs -f shopping-mongo
 
 docker exec -it shopping-mongo /bin/bash
@@ -34,6 +38,21 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose.override.yml up -d
 docker-compose -f .\docker-compose.yml -f .\docker-compose.override.yml down
 
 docker run -d -p 3000:3000 mongoclient/mongoclient
+
+docker pull redis
+
+docker run -d -p 6379:6379 --name basket-redis redis
+
+docker exec -it basket-redis /bin/bash
+
+redis-cli
+
+============================================================= Redis 
+ping
+
+set [key] [value]
+
+get [key]
 
 
 
