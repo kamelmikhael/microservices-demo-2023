@@ -47,6 +47,15 @@ docker exec -it basket-redis /bin/bash
 
 redis-cli
 
+============================================================= Portainer.io
+Portainer.readhedocs.io
+
+============================================================= postgres
+docker pull postgres
+
+============================================================= pgadmin.org
+docker pull dpage/pgadmin4
+
 ============================================================= Redis 
 ping
 
