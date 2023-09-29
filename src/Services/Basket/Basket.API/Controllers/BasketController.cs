@@ -1,4 +1,5 @@
 using Basket.API.Entities;
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,13 +11,16 @@ namespace Basket.API.Controllers
     {
         private readonly ILogger<BasketController> _logger;
         private readonly IBasketRepository _basketRepository;
+        private readonly DiscountGrpcService _discountGrpcService;
 
         public BasketController(
             ILogger<BasketController> logger,
-            IBasketRepository basketRepository)
+            IBasketRepository basketRepository,
+            DiscountGrpcService discountGrpcService)
         {
-            _logger = logger;
-            _basketRepository = basketRepository;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _basketRepository = basketRepository ?? throw new ArgumentNullException(nameof(basketRepository));
+            _discountGrpcService = discountGrpcService ?? throw new ArgumentNullException(nameof(discountGrpcService));
         }
 
         [HttpGet("{userName}", Name = nameof(GetBasket))]
@@ -27,7 +31,17 @@ namespace Basket.API.Controllers
         [HttpPut(Name = nameof(UpdateBasket))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShoppingCart))]
         public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart basket)
-            => Ok(await _basketRepository.UpdateBasket(basket));
+        {
+            //TODO: Communicate with Discount.Grpc
+            foreach(var item in basket.Items)
+            {
+                var coupon = await _discountGrpcService.GetDiscountAsync(item.ProductName);
+
+                item.Price -= coupon.Amount;
+            }
+
+            return Ok(await _basketRepository.UpdateBasket(basket));
+        }
 
         [HttpDelete("{userName}", Name = nameof(DeleteBasket))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(void))]
