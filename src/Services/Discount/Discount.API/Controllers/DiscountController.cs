@@ -9,11 +9,11 @@ namespace Discount.API.Controllers
     public class DiscountController : ControllerBase
     {
         private readonly ILogger<DiscountController> _logger;
-        private readonly ICouponReoistory _couponReoistory;
+        private readonly IDiscountReoistory _couponReoistory;
 
         public DiscountController(
             ILogger<DiscountController> logger, 
-            ICouponReoistory couponReoistory)
+            IDiscountReoistory couponReoistory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _couponReoistory = couponReoistory ?? throw new ArgumentNullException(nameof(couponReoistory));

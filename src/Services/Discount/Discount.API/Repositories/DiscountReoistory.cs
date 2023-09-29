@@ -4,11 +4,11 @@ using Dapper;
 
 namespace Discount.API.Repositories;
 
-public class CouponReoistory : ICouponReoistory
+public class DiscountReoistory : IDiscountReoistory
 {
     private readonly IConfiguration _configuration;
 
-    public CouponReoistory(IConfiguration configuration)
+    public DiscountReoistory(IConfiguration configuration)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }

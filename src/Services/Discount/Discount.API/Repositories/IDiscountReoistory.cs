@@ -1,8 +1,8 @@
-﻿using Discount.Grpc.Entities;
+﻿using Discount.API.Entities;
 
-namespace Discount.Grpc.Repositories;
+namespace Discount.API.Repositories;
 
-public interface ICouponReoistory
+public interface IDiscountReoistory
 {
     Task<Coupon> GetDiscount(string productName);
 
