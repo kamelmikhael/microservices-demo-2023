@@ -5,11 +5,11 @@ namespace Basket.API.GrpcServices;
 public class DiscountGrpcService
 {
     private readonly DiscountProtoService.DiscountProtoServiceClient _discountProtoServiceClient;
-    private readonly ILogger _logger;
+    private readonly ILogger<DiscountGrpcService> _logger;
 
     public DiscountGrpcService(
         DiscountProtoService.DiscountProtoServiceClient discountProtoServiceClient,
-        ILogger logger)
+        ILogger<DiscountGrpcService> logger)
     {
         _discountProtoServiceClient = discountProtoServiceClient 
             ?? throw new ArgumentNullException(nameof(discountProtoServiceClient));
