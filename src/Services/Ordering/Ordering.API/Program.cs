@@ -1,9 +1,14 @@
+using Ordering.API.Extensions;
 using Ordering.Application;
+using Ordering.Infrastructure;
+using Ordering.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddApplictionServices();
+builder.Services
+    .AddApplictionServices()
+    .AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -22,5 +27,12 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MigrateDatabase<OrderDbContext>(async (dbContext, services) =>
+{
+    var logger = services.GetService<ILogger<OrderSeedData>>();
+
+    await OrderSeedData.SeedAsync(dbContext, logger);
+});
 
 app.Run();
