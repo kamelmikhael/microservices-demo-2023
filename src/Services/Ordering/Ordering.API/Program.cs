@@ -28,11 +28,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MigrateDatabase<OrderDbContext>(async (dbContext, services) =>
+app.MigrateDatabase<OrderDbContext>((dbContext, services) =>
 {
     var logger = services.GetService<ILogger<OrderSeedData>>();
 
-    await OrderSeedData.SeedAsync(dbContext, logger);
+    OrderSeedData.SeedAsync(dbContext, logger).Wait();
 });
 
 app.Run();
