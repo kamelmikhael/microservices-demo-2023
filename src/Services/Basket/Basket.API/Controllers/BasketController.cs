@@ -37,7 +37,7 @@ namespace Basket.API.Controllers
         public async Task<ActionResult<ShoppingCart>> GetBasket(string userName)
             => Ok(await _basketRepository.GetBasket(userName) ?? new ShoppingCart(userName));
 
-        [HttpPut(Name = nameof(UpdateBasket))]
+        [HttpPost(Name = nameof(UpdateBasket))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShoppingCart))]
         public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart basket)
         {
@@ -61,7 +61,7 @@ namespace Basket.API.Controllers
             return Ok();
         }
 
-        [Route(nameof(Checkout))]
+        [Route("[action]")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
