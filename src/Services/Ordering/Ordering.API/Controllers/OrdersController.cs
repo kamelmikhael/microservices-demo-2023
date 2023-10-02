@@ -31,6 +31,7 @@ namespace Ordering.API.Controllers
             return Ok(orders);
         }
 
+        //testing purpose
         [HttpPost(Name = nameof(CheckoutOrder))]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public async Task<ActionResult<int>> CheckoutOrder([FromBody] OrderCheckoutCommand command)

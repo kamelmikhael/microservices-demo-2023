@@ -117,6 +117,7 @@ services:
       - "EmailSettings:ApiKey=asd"
       - "EmailSettings:FromAddress=test@gmail.com"
       - "EmailSettings:FromName=test"
+      - "RabbitMqSettings:Host=amqp://guest:guest@rabbitmq"
     depends_on:
       - orderdb
     ports:
